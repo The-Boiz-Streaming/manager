@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -66,13 +67,18 @@ public class ManagerController {
     }
 
     @GetMapping("release")
-    public ResponseEntity<ReleaseResponseDTO> getRelease(@RequestParam List<UUID> releaseId) {
+    public ResponseEntity<ReleaseResponseDTO> getRelease(@RequestParam Optional<List<UUID>> releaseId) {
         return ResponseEntity.ok(new ReleaseResponseDTO(releaseService.getRelease(releaseId)));
     }
 
     @GetMapping("track")
-    public ResponseEntity<TrackResponseDTO> getTrack(@RequestParam List<UUID> trackId) {
+    public ResponseEntity<TrackResponseDTO> getTrack(@RequestParam Optional<List<UUID>> trackId) {
         return ResponseEntity.ok(new TrackResponseDTO(releaseService.getTracks(trackId)));
+    }
+
+    @GetMapping("artist")
+    public ResponseEntity<ArtistResponseDTO> getArtist(@RequestParam Optional<List<UUID>> artistId) {
+        return ResponseEntity.ok(new ArtistResponseDTO(artistService.getArtists(artistId)));
     }
 
     private boolean validateRelease(CreateReleaseDTO release) {

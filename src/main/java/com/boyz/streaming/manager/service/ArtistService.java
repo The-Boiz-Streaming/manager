@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -44,5 +47,21 @@ public class ArtistService {
         }
 
         log.info("Artist {} deleted", artistId);
+    }
+
+    public List<Artist> getArtists(Optional<List<UUID>> artistId) {
+        if (artistId.isEmpty() || artistId.get().isEmpty()) {
+            var artists = artistRepository.findAll();
+            log.info("All artists found");
+            return artists;
+        }
+        List<Artist> artists = new ArrayList<>();
+        artistId.get().forEach(id -> {
+            var artist = artistRepository.findById(id);
+            artist.ifPresent(artists::add);
+            log.info("Artist {} found", artistId);
+        });
+
+        return artists;
     }
 }

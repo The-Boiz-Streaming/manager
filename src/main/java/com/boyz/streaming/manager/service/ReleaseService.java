@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -69,9 +70,14 @@ public class ReleaseService {
         log.info("Release {} deleted", releaseId);
     }
 
-    public List<Release> getRelease(List<UUID> releaseId) {
+    public List<Release> getRelease(Optional<List<UUID>> releaseId) {
+        if (releaseId.isEmpty() || releaseId.get().isEmpty()) {
+            var releases = releaseRepository.findAll();
+            log.info("All releases found");
+            return releases;
+        }
         List<Release> releases = new ArrayList<>();
-        releaseId.forEach(id -> {
+        releaseId.get().forEach(id -> {
             var release = releaseRepository.findById(id);
             release.ifPresent(releases::add);
             log.info("Release {} found", releaseId);
@@ -80,9 +86,14 @@ public class ReleaseService {
         return releases;
     }
 
-    public List<Track> getTracks(List<UUID> trackId) {
+    public List<Track> getTracks(Optional<List<UUID>> trackId) {
+        if (trackId.isEmpty() || trackId.get().isEmpty()) {
+            var tracks = trackRepository.findAll();
+            log.info("All tracks found");
+            return tracks;
+        }
         List<Track> tracks = new ArrayList<>();
-        trackId.forEach(id -> {
+        trackId.get().forEach(id -> {
             var track = trackRepository.findById(id);
             track.ifPresent(tracks::add);
             log.info("Track {} found", trackId);
