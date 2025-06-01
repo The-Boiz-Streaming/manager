@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: manager
+  datasource:
+    url: jdbc:postgresql://localhost:5432/manager
+    username: admin
+    password: admin
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+
