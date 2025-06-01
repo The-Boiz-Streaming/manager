@@ -68,4 +68,26 @@ public class ReleaseService {
 
         log.info("Release {} deleted", releaseId);
     }
+
+    public List<Release> getRelease(List<UUID> releaseId) {
+        List<Release> releases = new ArrayList<>();
+        releaseId.forEach(id -> {
+            var release = releaseRepository.findById(id);
+            release.ifPresent(releases::add);
+            log.info("Release {} found", releaseId);
+        });
+
+        return releases;
+    }
+
+    public List<Track> getTracks(List<UUID> trackId) {
+        List<Track> tracks = new ArrayList<>();
+        trackId.forEach(id -> {
+            var track = trackRepository.findById(id);
+            track.ifPresent(tracks::add);
+            log.info("Track {} found", trackId);
+        });
+
+        return tracks;
+    }
 }

@@ -1,8 +1,6 @@
 package com.boyz.streaming.manager.controller;
 
-import com.boyz.streaming.manager.dto.CreateArtistDTO;
-import com.boyz.streaming.manager.dto.CreateReleaseDTO;
-import com.boyz.streaming.manager.dto.TrackMetaDTO;
+import com.boyz.streaming.manager.dto.*;
 import com.boyz.streaming.manager.entity.enums.ReleaseType;
 import com.boyz.streaming.manager.service.ArtistService;
 import com.boyz.streaming.manager.service.ReleaseService;
@@ -12,6 +10,8 @@ import org.springframework.aot.hint.annotation.RegisterReflection;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -58,6 +58,21 @@ public class ManagerController {
     public ResponseEntity<String> deleteArtist(@RequestParam UUID artistId) {
         artistService.deleteArtist(artistId);
         return ResponseEntity.ok("OK");
+    }
+
+    @GetMapping("release/types")
+    public ResponseEntity<String> getReleaseTypes() {
+        return ResponseEntity.ok(Arrays.toString(ReleaseType.values()));
+    }
+
+    @GetMapping("release")
+    public ResponseEntity<ReleaseResponseDTO> getRelease(@RequestParam List<UUID> releaseId) {
+        return ResponseEntity.ok(new ReleaseResponseDTO(releaseService.getRelease(releaseId)));
+    }
+
+    @GetMapping("track")
+    public ResponseEntity<TrackResponseDTO> getTrack(@RequestParam List<UUID> trackId) {
+        return ResponseEntity.ok(new TrackResponseDTO(releaseService.getTracks(trackId)));
     }
 
     private boolean validateRelease(CreateReleaseDTO release) {
